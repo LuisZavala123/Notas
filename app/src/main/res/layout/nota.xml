@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/unanota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/nombrenota"
+            android:text="Este es el nombre de la nota"
+            android:textSize="22sp"
+            android:layout_marginTop="6dp"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/descripcionnota"
+            android:text="Esta es la descripción de la nota que se ve cuando se guarda una uwu"
+            android:textSize="10sp"
+            android:maxLines="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nombrenota"
+            android:layout_alignLeft="@+id/nombrenota"
+            android:layout_alignStart="@+id/nombrenota" />
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/unanota"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#FFF491" />
+
+</RelativeLayout>
