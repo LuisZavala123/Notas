@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.notas.fragmentos.FragmentoAgregar;
+
 import com.example.notas.fragmentos.FragmentoNotas;
 import com.example.notas.fragmentos.FragmentoTareas;
 
@@ -14,7 +14,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
         childFragments = new Fragment[] {
-                //new Agregar(),
+
                 new FragmentoNotas(),
                 new FragmentoTareas()
         };
@@ -33,6 +33,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         String title = getItem(position).getClass().getName();
-        return title.subSequence(title.lastIndexOf(".") + 1, title.length());
+        title =(String) title.subSequence(title.lastIndexOf(".") + 1, title.length());
+        switch (title){
+
+            case "FragmentoNotas":
+                return "Notas";
+            case "FragmentoTareas":
+                return "Tareas";
+            default:
+                return "Titulo";
+        }
     }
 }
