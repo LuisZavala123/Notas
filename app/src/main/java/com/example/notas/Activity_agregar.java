@@ -311,8 +311,10 @@ public class Activity_agregar extends AppCompatActivity
                             daoNota.actualizarNota(nota);
                             for (int i = 0; i < actMultimedias.size(); i++) {
                                 daoMultimedia.insertMultiNota(actMultimedias.get(i), nota.getId());
+
                             }
                             Toast.makeText(this, "Nota actualizada", Toast.LENGTH_SHORT).show();
+                            finish();
                         } catch (Exception e) {
                             Toast.makeText(this, "Ocurrio un error", Toast.LENGTH_SHORT).show();
                         }
@@ -338,9 +340,10 @@ public class Activity_agregar extends AppCompatActivity
                             for (int i = 0; i < lista.size(); i++) {
                                 daoRecordatorio.insert(lista.get(i), tarea.getId());
                             }
-                            Toast.makeText(this, "Tarea actualizada :3", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Tarea actualizada ", Toast.LENGTH_SHORT).show();
+                            finish();
                         } catch (Exception e) {
-                            Toast.makeText(this, "Algo salió mal :c", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Algo salió mal ", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
@@ -357,6 +360,7 @@ public class Activity_agregar extends AppCompatActivity
                                 nota.setFecha(fechaActual());
                                 daoNota.insertaNota(nota);
                                 Toast.makeText(Activity_agregar.this, "Se agregó la nota", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else if (item == 1) {
                                 SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                                 daoTarea = new DAOTarea(getApplicationContext());
@@ -370,6 +374,7 @@ public class Activity_agregar extends AppCompatActivity
                                 }
                                 daoTarea.insertarTarea(tarea);
                                 Toast.makeText(Activity_agregar.this, "Se agregó la tarea", Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         }
                     });
@@ -659,7 +664,7 @@ public class Activity_agregar extends AppCompatActivity
         int numero = (int) (Math.random() * (999 - 1 + 1) + 1);
         String hora = new SimpleDateFormat("HHmmss").format(new Date());
         hora += "_" + numero;
-        audioRuta = dir + "audio_" + hora + ".3gp";
+        audioRuta = dir + "/audio_" + hora + ".3gp";
         mediaRecorder.setOutputFile(audioRuta);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
