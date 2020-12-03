@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -224,7 +225,9 @@ public class Activity_agregar extends AppCompatActivity
             case R.id.btnVideo:
                 String[] permisosVideo = {
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        android.Manifest.permission.CAMERA
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.RECORD_AUDIO
                 };
 
                 if (!Permisos(this, permisosVideo)) {
@@ -235,6 +238,11 @@ public class Activity_agregar extends AppCompatActivity
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.RECORD_AUDIO)
+                        != PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                 } else {
                     try {
@@ -262,7 +270,9 @@ public class Activity_agregar extends AppCompatActivity
                 break;
             case R.id.btnAudio:
                 String[] permisosAudio = {
-                        Manifest.permission.RECORD_AUDIO
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
                 };
 
                 if (!Permisos(this, permisosAudio)) {
@@ -271,6 +281,10 @@ public class Activity_agregar extends AppCompatActivity
 
                 if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.RECORD_AUDIO )
+                        != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE )
                         != PackageManager.PERMISSION_GRANTED) {
                 } else {
                     onGrabar(flag);
@@ -492,7 +506,7 @@ public class Activity_agregar extends AppCompatActivity
         int numero = (int) (Math.random() * (999 - 1 + 1) + 1);
         String hora = new SimpleDateFormat("HHmmss").format(new Date());
         hora += "_" + numero;
-        nombreVideo = "vidio_" + hora;
+        nombreVideo = "video_" + hora;
         FileInputStream entrada = descriptor.createInputStream();
         File alm = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
         File ruta = new File(alm.getAbsoluteFile() + "/");
@@ -565,9 +579,11 @@ public class Activity_agregar extends AppCompatActivity
                 uriDelVideo = data.getData();
                 try {
 
-                    descriptor = getContentResolver().openAssetFileDescriptor(data.getData(), "rw");
+
+                    descriptor = getContentResolver().openAssetFileDescriptor(data.getData(), "r");
                     creaVideo(descriptor);
                 } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -639,19 +655,20 @@ public class Activity_agregar extends AppCompatActivity
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+        String dir = getExternalCacheDir().getAbsolutePath();
         int numero = (int) (Math.random() * (999 - 1 + 1) + 1);
         String hora = new SimpleDateFormat("HHmmss").format(new Date());
         hora += "_" + numero;
-        audioNombre = "audio_" + hora + ".3gp";
-        File audio = new File(dir, audioNombre);
-        audioRuta = dir.getAbsolutePath() + "/" + audioNombre;
-        mediaRecorder.setOutputFile(audio.getAbsolutePath());
+        audioRuta = dir + "audio_" + hora + ".3gp";
+        mediaRecorder.setOutputFile(audioRuta);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
+
             mediaRecorder.prepare();
+
         } catch (IllegalStateException e) {
             e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
